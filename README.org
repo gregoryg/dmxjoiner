@@ -1,0 +1,10 @@
+* dmxjoiner
+
+** Description
+   Hadoop jobs doing large joins using DMExpress
+
+   A large join is defined as having two sides too large to easily fit into memory.
+   Thus, the join strategy is a reduce-side join, with the mapper able to parse both
+   sides of the join.  
+
+
