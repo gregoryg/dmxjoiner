@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.LongWritable;
 
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.MapReduceBase;
@@ -9,13 +10,13 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
 public class JoinerReducer extends MapReduceBase implements
-    Reducer<Text, Text, Text, Text> {
+    Reducer<LongWritable, Text, LongWritable, Text> {
 
   private static final String SEP = ",";
 
   @Override
-  public void reduce(Text key, Iterator<Text> values,
-      OutputCollector<Text, Text> output, Reporter reporter) throws IOException {
+  public void reduce(LongWritable key, Iterator<Text> values,
+      OutputCollector<LongWritable, Text> output, Reporter reporter) throws IOException {
 
     // gjg
       StringBuffer refs = new StringBuffer();
