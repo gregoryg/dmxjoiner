@@ -1,1 +1,6 @@
-/java/Joiner.jar
+*.class
+*~
+/java/Joiner/dist/lib/hadoop-common.jar
+/java/Joiner/dist/lib/hadoop-mapreduce-client-common.jar
+/java/Joiner/dist/lib/hadoop-mapreduce-client-core.jar
+/java/Joiner/dist/lib/hadoop-yarn-common.jar
