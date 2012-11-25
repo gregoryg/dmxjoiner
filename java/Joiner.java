@@ -43,7 +43,7 @@ public class Joiner extends Configured implements Tool {
     conf.setOutputKeyClass(Text.class);
     conf.setOutputValueClass(Text.class);
 
-    conf.setNumReduceTasks(1);
+    conf.setNumReduceTasks(10); // commonly overriden at command line
 
     JobClient.runJob(conf);
     return 0;
