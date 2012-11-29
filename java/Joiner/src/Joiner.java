@@ -2,6 +2,7 @@ import org.apache.hadoop.fs.Path;
 
 import org.apache.hadoop.io.Text;
 
+import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.JobClient;
@@ -31,6 +32,7 @@ public class Joiner extends Configured implements Tool {
     // gjg
 
     // conf.setInputFormat(KeyValueTextInputFormat.class);
+    conf.setInputFormat(TextInputFormat.class);
     FileInputFormat.setInputPaths(conf, new Path(input));
     FileOutputFormat.setOutputPath(conf, new Path(output));
 
