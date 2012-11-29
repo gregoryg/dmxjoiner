@@ -26,34 +26,36 @@ public class JoinerReducer extends MapReduceBase implements
 	String custkey="", orderstatus="", ordertotal="", orderdate=""; // one per key (order side)
       
       
-	while (values.hasNext()) {
+	// while (values.hasNext()) {
 
-	    String mycols[] = values.next().toString().split("\\|");
-	    // refs.append(values.next() + ",");
-	    if (mycols[0].toString().equals("1")) { // order side
-		orderFound = true;
-		custkey = new String(mycols[1]);
-		orderstatus = new String(mycols[2]);
-		ordertotal = new String(mycols[3]);
-		orderdate = new String(mycols[4]);
-	    } else if (mycols[0].toString().equals("2")) { // line item side
-		qty += Integer.parseInt(mycols[1]);
-		price += Double.parseDouble(mycols[2]);
-		discount += Double.parseDouble(mycols[3]);
-		tax += Double.parseDouble(mycols[4]);
-		count++;
-	    } else {
-		custkey = new String("bummer: the join side is '" + mycols[0] + "'");
-	    }
+	//     String mycols[] = values.next().toString().split("\\|");
+	//     // refs.append(values.next() + ",");
+	//     if (mycols[0].toString().equals("1")) { // order side
+	// 	orderFound = true;
+	// 	custkey = new String(mycols[1]);
+	// 	orderstatus = new String(mycols[2]);
+	// 	ordertotal = new String(mycols[3]);
+	// 	orderdate = new String(mycols[4]);
+	//     } else if (mycols[0].toString().equals("2")) { // line item side
+	// 	qty += Integer.parseInt(mycols[1]);
+	// 	price += Double.parseDouble(mycols[2]);
+	// 	discount += Double.parseDouble(mycols[3]);
+	// 	tax += Double.parseDouble(mycols[4]);
+	// 	count++;
+	//     } else {
+	// 	custkey = new String("bummer: the join side is '" + mycols[0] + "'");
+	//     }
           
-	}
+	// }
+	output.collect(key, new Text("howdy"));
 	// output.collect(key, new Text(refs.toString()));
-	if (orderFound) {
-	    output.collect(key, new Text( custkey.toString() + "|" + orderstatus.toString() + "|" +
-					  ordertotal.toString() + "|" + orderdate.toString() + "|" +
-					  Integer.toString(qty) + "|" + Double.toString(price) + "|" + 
-					  Double.toString(discount) + "|" + Double.toString(tax) + "|" +
-					  Integer.toString(count) ));
-	}
+	// if (orderFound) {
+	//     output.collect(key, new Text("howdy"));
+	//     // output.collect(key, new Text( custkey.toString() + "|" + orderstatus.toString() + "|" +
+	//     // 				  ordertotal.toString() + "|" + orderdate.toString() + "|" +
+	//     // 				  Integer.toString(qty) + "|" + Double.toString(price) + "|" + 
+	//     // 				  Double.toString(discount) + "|" + Double.toString(tax) + "|" +
+	//     // 				  Integer.toString(count) ));
+	// }
     }
 }
