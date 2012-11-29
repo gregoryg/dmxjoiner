@@ -1,7 +1,6 @@
 import org.apache.hadoop.fs.Path;
 
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.LongWritable;
 
 import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.FileOutputFormat;
@@ -38,10 +37,10 @@ public class Joiner extends Configured implements Tool {
     conf.setMapperClass(JoinerMapper.class);
     conf.setReducerClass(JoinerReducer.class);
 
-    conf.setMapOutputKeyClass(LongWritable.class);
+    conf.setMapOutputKeyClass(Text.class);
     conf.setMapOutputValueClass(Text.class);
 
-    conf.setOutputKeyClass(LongWritable.class);
+    conf.setOutputKeyClass(Text.class);
     conf.setOutputValueClass(Text.class);
 
 //    conf.setNumReduceTasks(3); // commonly overriden at command line
