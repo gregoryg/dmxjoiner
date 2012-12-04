@@ -13,6 +13,28 @@ public class JoinerReducer extends MapReduceBase implements
 						     Reducer<Text, Text, Text, Text> {
 
     private static final String SEP = ",";
+    // int accumulator indexes
+    private static final int IDXQTY = 0;
+    private static final int IDXCNT = 1;
+    // amount (double) accumulator indexes
+    private static final int IDXPRICE = 0;
+    private static final int IDXDISC =  1;
+    private static final int IDXTAX =   2;
+
+    private static final int IDXJOINSIDE = 0;
+    // column indexes into order records
+    private static final int IDXORDERCUST   = 1;
+    private static final int IDXORDERSTATUS = 2;
+    private static final int IDXORDERTOTAL  = 3;
+    private static final int IDXORDERDATE   = 4;
+    // column indexes into line item records
+    private static final int IDXLITEMQTY     = 1;
+    private static final int IDXLITEMPRICE   = 2;
+    private static final int IDXLITEMDISC    = 3;
+    private static final int IDXLITEMTAX     = 4;
+    private static final int IDXLITEMCNT     = 5;
+
+
 
     @Override
 	public void reduce(Text key, Iterator<Text> values,
@@ -20,42 +42,39 @@ public class JoinerReducer extends MapReduceBase implements
 
 	// gjg
 	Boolean orderFound = false; 
-	StringBuffer refs = new StringBuffer();
-	int qty=0, count=0;
-	double price=0.00,discount=0.00,tax=0.00;
+	int[] counters = {0,0}; // qty, lineitem count
+	double[] amtTotals = {0.00, 0.00, 0.00}; // price, discount, tax
 	String custkey="", orderstatus="", ordertotal="", orderdate=""; // one per key (order side)
       
       
-	// while (values.hasNext()) {
+	while (values.hasNext()) {
 
-	//     String mycols[] = values.next().toString().split("\\|");
-	//     // refs.append(values.next() + ",");
-	//     if (mycols[0].toString().equals("1")) { // order side
-	// 	orderFound = true;
-	// 	custkey = new String(mycols[1]);
-	// 	orderstatus = new String(mycols[2]);
-	// 	ordertotal = new String(mycols[3]);
-	// 	orderdate = new String(mycols[4]);
-	//     } else if (mycols[0].toString().equals("2")) { // line item side
-	// 	qty += Integer.parseInt(mycols[1]);
-	// 	price += Double.parseDouble(mycols[2]);
-	// 	discount += Double.parseDouble(mycols[3]);
-	// 	tax += Double.parseDouble(mycols[4]);
-	// 	count++;
-	//     } else {
-	// 	custkey = new String("bummer: the join side is '" + mycols[0] + "'");
-	//     }
+	    String mycols[] = values.next().toString().split("\\|");
+	    if (mycols[IDXJOINSIDE].toString().equals("1")) { // order side
+		orderFound = true;
+		custkey = new String(mycols[IDXORDERCUST]);
+		orderstatus = new String(mycols[IDXORDERSTATUS]);
+		ordertotal = new String(mycols[IDXORDERTOTAL]);
+		orderdate = new String(mycols[IDXORDERDATE]);
+	    } else if (mycols[IDXJOINSIDE].toString().equals("2")) { // line item side
+		counters[IDXQTY] += Integer.parseInt(mycols[IDXLITEMQTY]);
+		counters[IDXCNT] += Integer.parseInt(mycols[IDXLITEMCNT]);
+
+		amtTotals[IDXPRICE] += Double.parseDouble(mycols[IDXLITEMPRICE]);
+		amtTotals[IDXDISC] += Double.parseDouble(mycols[IDXLITEMDISC]);
+		amtTotals[IDXTAX] += Double.parseDouble(mycols[IDXLITEMTAX]);
+	    } else {
+		custkey = new String("bummer: the join side is '" + mycols[IDXJOINSIDE] + "' and the key is '" + key.toString() + "' ");
+	    }
           
-	// }
-	output.collect(key, new Text("howdy"));
-	// output.collect(key, new Text(refs.toString()));
+	}
 	// if (orderFound) {
-	//     output.collect(key, new Text("howdy"));
-	//     // output.collect(key, new Text( custkey.toString() + "|" + orderstatus.toString() + "|" +
-	//     // 				  ordertotal.toString() + "|" + orderdate.toString() + "|" +
-	//     // 				  Integer.toString(qty) + "|" + Double.toString(price) + "|" + 
-	//     // 				  Double.toString(discount) + "|" + Double.toString(tax) + "|" +
-	//     // 				  Integer.toString(count) ));
+	    
+	    output.collect(key, new Text( custkey.toString() + "|" + orderstatus.toString() + "|" +
+	    				  ordertotal.toString() + "|" + orderdate.toString() + "|" +
+	    				  Integer.toString(counters[IDXQTY]) + "|" + Double.toString(amtTotals[IDXPRICE]) + "|" + 
+	    				  Double.toString(amtTotals[IDXDISC]) + "|" + Double.toString(amtTotals[IDXTAX]) + "|" +
+	    				  Integer.toString(counters[IDXCNT]) ));
 	// }
     }
 }
