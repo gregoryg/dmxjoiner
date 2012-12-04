@@ -2,7 +2,8 @@
 
 hadoop fs -rm -r join-combiner-output
 
-hadoop jar  /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.1.1.jar \
+# hadoop jar  /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.1.1.jar \
+hadoop jar  /usr/lib/hadoop-mapreduce/hadoop-streaming-2.0.0-cdh4.1.1.jar \
     -D mapred.job.name="Join TPCH test with DMX COMBINER" \
     -D mapreduce.input.fileinputformat.split.minsize=10737418240 \
     -D mapred.sortplugin.class=com.syncsort.dmexpress.hadoop.DMXHadoopSortPlugin \
@@ -12,8 +13,8 @@ hadoop jar  /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.
     -D dmx.map.task.useAsPartitioner=true \
     -libjars=/usr/local/dmexpress/lib/dmxhadoop.jar \
     -numReduceTasks 10 \
-    -input /tpch/input/lineitem.tbl  \
-    -input /tpch/input/orders.tbl  \
+    -input /tpch/input/s1/lineitem.tbl  \
+    -input /tpch/input/s1/orders.tbl  \
     -output join-combiner-output   \
     -file mapper-combiner-lineitem.dxt \
     -file mapper-combiner-orders.dxt \
@@ -24,9 +25,11 @@ hadoop jar  /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.
     -file run-reducer.sh \
     -file mapsort.dxt \
     -file reducemerge.dxt \
-    -mapper  run-mapper.sh   \
+    -mapper  run-mapper.sh \
     -reducer run-reducer.sh 
 
+#    -D dmx.field.delimiter=, \
+#    -D dmx.map.task.useAsPartitioner=true \
 #    -D mapred.output.key.comparator.class=org.apache.hadoop.mapred.lib.KeyFieldBasedComparator \
 #    -D map.output.key.field.separator=. \
 #    -D stream.num.map.output.key.fields=2 \
