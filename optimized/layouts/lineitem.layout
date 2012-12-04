@@ -1,0 +1,18 @@
+/DELIMITEDRECORDLAYOUT rl_lineitem_tbl { 
+		       ORDERKEY en,
+		       PARTKEY en,
+		       SUPPKEY en,
+		       LINENUMBER en,
+		       QUANTITY en,
+		       EXTENDEDPRICE en,
+		       DISCOUNT en,
+		       TAX en,
+		       RETURNFLAG character,
+		       LINESTATUS character,
+		       SHIPDATE datetime (YEAR-MM0-DD0), 
+		       COMMITDATE datetime (YEAR-MM0-DD0), 
+		       RECEIPTDATE datetime (YEAR-MM0-DD0), 
+		       SHIPINSTRUCT character,
+		       SHIPMODE character,
+		       COMMENT character 
+}

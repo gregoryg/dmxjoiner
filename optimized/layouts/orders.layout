@@ -1,0 +1,11 @@
+/DELIMITEDRECORDLAYOUT rl_orders_tbl {
+       		       ORDERKEY en,
+		       CUSTKEY en,
+		       ORDERSTATUS character,
+		       TOTALPRICE en,
+		       ORDERDATE datetime (YEAR-MM0-DD0),
+		       ORDERPRIORITY character,
+		       CLERK character,
+		       SHIPPRIORITY character,
+		       COMMENT character
+}
